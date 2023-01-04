@@ -42,6 +42,10 @@ class Brick {
     return BrickColors[this.code];
   }
 
+  get height () {
+    return this.scheme.length;
+  }
+
   get width() {
     return Math.max(...this.scheme.map((row) => row.length));
   }
@@ -65,7 +69,6 @@ class Brick {
 
   down() {
     this.coords.y++;
-    console.log(this.coords);
   }
 }
 

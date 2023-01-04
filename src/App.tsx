@@ -1,24 +1,16 @@
 import { useEffect, useState } from "react";
 import "./App.css";
+import useForceUpdate from "./hooks/useForceUpdate";
+import useInterval from "./hooks/useInterval";
 import { Game } from "./models";
 
 function App() {
   const [game, setGame] = useState<Game>(new Game());
-  let [gameInterval, setGameInterval] = useState<NodeJS.Timer>();
-
-  useEffect(() => {
-    if (game.playing && gameInterval) {
-      setGameInterval(
-        setInterval(() => {
-          game.tick();
-        }, game.timeInterval)
-      );
-      setGame(game);
-    } else {
-      clearTimeout(gameInterval);
-      setGameInterval(undefined);
-    }
-  }, [game.playing]);
+  const forceUpdate = useForceUpdate();
+  const gameInterval = useInterval(() => {
+    setGame(game.tick());
+    forceUpdate();
+  }, game.timeInterval);
 
   return (
     <div className="App">

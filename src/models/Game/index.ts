@@ -22,11 +22,13 @@ class Game {
     return 1000 / this.level;
   }
 
-  tick() {
+  tick(): Game {
     if (this.brick.coords.y === this.playground.size.h - 1) {
       this.brick = Brick.random({ playground: this.playground });
+    } else {
+      this.brick.down();
     }
-    this.brick.down();
+    return this;
   }
 }
 
