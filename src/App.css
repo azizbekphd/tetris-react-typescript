@@ -8,6 +8,7 @@
   background-color: lightcyan;
   width: max-content;
   height: 100vh;
+  --size: min(25px, 5.5vw)
 }
 
 .playground {
@@ -21,8 +22,8 @@
 }
 
 .playground td {
-  width: 25px;
-  height: 25px;
+  width: var(--size);
+  height: var(--size);
   background-color: lightgray;
 }
 
@@ -79,4 +80,31 @@ button:active {
 
 .preview {
   width: 150px;
+}
+
+.controls,
+.controls * {
+  margin: 0;
+  padding: 0;
+}
+
+.controls {
+  margin-top: 20px;
+}
+
+.controls :is(td, button) {
+  width: 30px;
+  height: 30px;
+}
+
+@media screen and (max-width: 450px) {
+  .playground-wrapper {
+    flex-direction: column-reverse;
+  }
+
+  .preview {
+    margin: 10px;
+    width: max-content;
+    align-self: center;
+  }
 }

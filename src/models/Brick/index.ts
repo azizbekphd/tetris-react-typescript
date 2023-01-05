@@ -67,7 +67,6 @@ class Brick {
     const emptyRow = new Array<Cell>(width).fill(emptyCell);
     previewCells.push(emptyRow);
     previewCells.unshift(emptyRow);
-    console.table(previewCells.map((row)=>row.map((cell)=>cell.filled?"x":"")))
     return {
       cells: previewCells,
       offset: {x: 0, y: 0}

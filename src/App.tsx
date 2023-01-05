@@ -4,9 +4,11 @@ import useForceUpdate from "./hooks/useForceUpdate";
 import useInterval from "./hooks/useInterval";
 import { Brick, Game } from "./models";
 import SchemeUtils from "./models/Scheme/SchemeUtils";
+import isMobileOrTablet from "./utils/isMobileOrTablet";
 
 function App() {
   const [game, setGame] = useState<Game>(new Game());
+  const [mobile, setMobile] = useState<boolean>(false);
   const forceUpdate = useForceUpdate();
   useInterval(() => {
     if (!game.playing) return;
@@ -14,12 +16,17 @@ function App() {
     forceUpdate();
   }, game.timeInterval);
 
+  const left = () => game.moveBrick("l");
+  const right = () => game.moveBrick("r");
+  const down = () => game.moveBrick("d");
+  const up = () => game.rotateBrick();
+
   useEffect(() => {
     const actions: { [key: string]: () => void } = {
-      ArrowLeft: () => game.moveBrick("l"),
-      ArrowRight: () => game.moveBrick("r"),
-      ArrowDown: () => game.moveBrick("d"),
-      ArrowUp: () => game.rotateBrick(),
+      ArrowLeft: left,
+      ArrowRight: right,
+      ArrowDown: down,
+      ArrowUp: up,
     };
     const activeKeys = Object.keys(actions);
     document.onkeydown = (e) => {
@@ -30,6 +37,10 @@ function App() {
       }
     };
   }, [game]);
+
+  useEffect(() => {
+    setMobile(isMobileOrTablet());
+  }, []);
 
   return (
     <div className="App">
@@ -88,7 +99,10 @@ function App() {
                     <td
                       key={i}
                       style={
-                        SchemeUtils.includes(game.nextBrick.preview, { x: i, y: j })
+                        SchemeUtils.includes(game.nextBrick.preview, {
+                          x: i,
+                          y: j,
+                        })
                           ? {
                               backgroundColor: game.nextBrick.color,
                             }
@@ -102,6 +116,27 @@ function App() {
           </table>
         </div>
       </div>
+      {mobile ? <table className="controls">
+        <tbody>
+          <tr>
+            <td></td>
+            <td>
+              <button onClick={up}></button>
+            </td>
+            <td></td>
+          </tr>
+          <tr>
+            <td><button onClick={left}></button></td>
+            <td></td>
+            <td><button onClick={right}></button></td>
+          </tr>
+          <tr>
+            <td></td>
+            <td><button onClick={down}></button></td>
+            <td></td>
+          </tr>
+        </tbody>
+      </table> : <></>}
       <div
         className="fullscreen-menu"
         style={{
