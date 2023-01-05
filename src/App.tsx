@@ -155,7 +155,7 @@ function App() {
             forceUpdate();
           }}
         >
-          &#9654;
+          Play
         </button>
         <h3>
           {game.gameOver ? <span>Game Over! </span> : <></>}Score: {game.score}
