@@ -32,3 +32,36 @@
   justify-content: space-between;
   align-items: center;
 }
+
+.pause-button {
+  width: 30px;
+  height: 30px;
+  border-radius: 10px;
+}
+
+button {
+  border: 1px solid black;
+}
+
+button:active {
+  background-color: cyan;
+}
+
+.fullscreen-menu {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: cyan;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-evenly;
+}
+
+.play-button {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+}

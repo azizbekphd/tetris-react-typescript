@@ -8,8 +8,9 @@ import SchemeUtils from "./models/Scheme/SchemeUtils";
 function App() {
   const [game, setGame] = useState<Game>(new Game());
   const forceUpdate = useForceUpdate();
-  const gameInterval = useInterval(() => {
-    setGame(game.tick());
+  useInterval(() => {
+    if (!game.playing) return;
+    game.tick();
     forceUpdate();
   }, game.timeInterval);
 
@@ -22,6 +23,7 @@ function App() {
     };
     const activeKeys = Object.keys(actions);
     document.onkeydown = (e) => {
+      if (!game.playing) return;
       if (activeKeys.includes(e.key)) {
         actions[e.key]();
         forceUpdate();
@@ -33,7 +35,15 @@ function App() {
     <div className="App">
       <div className="appbar">
         <h4>Score: {game.score}</h4>
-        <button>| |</button>
+        <button
+          className="pause-button"
+          onClick={() => {
+            game.pause();
+            forceUpdate();
+          }}
+        >
+          | |
+        </button>
       </div>
       <table className="playground">
         <tbody>
@@ -63,6 +73,22 @@ function App() {
           ))}
         </tbody>
       </table>
+      <div
+        className="fullscreen-menu"
+        style={{
+          display: game.playing ? "none" : "flex",
+        }}
+      >
+        <button
+          className="play-button"
+          onClick={() => {
+            game.play();
+            forceUpdate();
+          }}
+        >
+          &#9654;
+        </button>
+      </div>
     </div>
   );
 }

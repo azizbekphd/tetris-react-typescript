@@ -23,7 +23,7 @@ class Game {
     this.level = 1;
     this.brick = Brick.random({ playground: this.playground });
     this.nextBrick = Brick.random({ playground: this.playground });
-    this.playing = true;
+    this.playing = false;
   }
 
   get timeInterval() {
@@ -106,6 +106,14 @@ class Game {
     );
 
     this.score += this.unit * this.level * deletedRows;
+  }
+
+  pause() {
+    this.playing = false;
+  }
+
+  play() {
+    this.playing = true;
   }
 }
 
