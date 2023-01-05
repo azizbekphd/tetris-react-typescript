@@ -160,7 +160,7 @@ class Brick {
       newScheme.offset.x--;
     }
     while (SchemeUtils.overlaps(newScheme, playground.scheme) ||
-      newScheme.offset.y + height >= playground.size.h) {
+      newScheme.offset.y + height > playground.size.h) {
       newScheme.offset.y--;
     }
     this.scheme = newScheme;
