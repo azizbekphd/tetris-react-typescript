@@ -3,7 +3,7 @@ enum CellColor {
     blue = "blue",
     orange = "orange",
     yellow = "yellow",
-    green = "green",
+    lawngreen = "lawngreen",
     deeppink = "deeppink",
     red = "red",
 }

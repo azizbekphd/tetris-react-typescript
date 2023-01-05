@@ -10,6 +10,7 @@ function App() {
   const gameInterval = useInterval(() => {
     setGame(game.tick());
     forceUpdate();
+    console.log(game);
   }, game.timeInterval);
 
   return (

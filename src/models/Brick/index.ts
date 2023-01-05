@@ -1,4 +1,5 @@
-import { Coords, Playground, Scheme, Size } from "..";
+import { Coords, Playground, Scheme } from "..";
+import SchemeUtils from "../Scheme/SchemeUtils";
 import BrickCode from "./BrickCode";
 import BrickColors from "./BrickColors";
 import BrickSchemes from "./BrickSchemes";
@@ -7,7 +8,6 @@ class Brick {
   static Code = BrickCode;
 
   code: BrickCode;
-  coords: Coords;
   scheme: Scheme;
 
   constructor({
@@ -18,14 +18,16 @@ class Brick {
     playground: Playground;
   }) {
     this.code = code;
-    this.scheme = BrickSchemes[code];
-    this.coords = {
-      x: Math.round(
-        (playground.size.w -
-          Math.max(...BrickSchemes[code].map((row) => row.length))) /
-          2
-      ),
-      y: 0,
+    this.scheme = {
+      ...BrickSchemes[code],
+      offset: {
+        x: Math.round(
+          (playground.size.w -
+            Math.max(...BrickSchemes[code].cells.map((row) => row.length))) /
+            2
+        ),
+        y: 0,
+      }
     };
   }
 
@@ -42,33 +44,41 @@ class Brick {
     return BrickColors[this.code];
   }
 
-  get height () {
-    return this.scheme.length;
+  get height() {
+    return this.scheme.cells.length;
   }
 
   get width() {
-    return Math.max(...this.scheme.map((row) => row.length));
+    return Math.max(...this.scheme.cells.map((row) => row.length));
+  }
+
+  get filledCells() {
+    return SchemeUtils.filledCells(this.scheme);
   }
 
   overlaps(coords: Coords): boolean {
-    const filledCells: Coords[] = this.scheme
-      .map((row, j) =>
-        row.map((cell, i) => {
-          return cell?.filled
-            ? { x: this.coords.x + i, y: this.coords.y + j }
-            : { x: -1, y: -1 };
-        })
-      )
-      .flat();
-    return (
-      filledCells.findIndex(
-        (cell) => cell.x === coords.x && cell.y === coords.y
-      ) !== -1
-    );
+    return SchemeUtils.overlaps(this.scheme, coords);
   }
 
   down() {
-    this.coords.y++;
+    this.scheme.offset.y++;
+  }
+
+  landed(playground: Playground): boolean {
+    return (
+      this.filledCells
+        .map((cell) => {
+          return {
+            ...cell,
+            y: cell.y + 1,
+          };
+        })
+        .findIndex((cell) => {
+          return (
+            cell.y === playground.size.h - 1 || SchemeUtils.overlaps(playground.scheme, cell)
+          );
+        }) !== -1
+    );
   }
 }
 

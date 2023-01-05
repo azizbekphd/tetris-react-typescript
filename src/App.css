@@ -9,11 +9,11 @@
 
 .playground {
   border-spacing: 1px;
-  background-color: darkgray;
+  background-color: gray;
 }
 
 .playground, .playground td {
-  border: 0.5px solid gray;
+  border: 0.5px solid darkgray;
 }
 
 .playground td {

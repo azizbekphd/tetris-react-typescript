@@ -1,4 +1,4 @@
-import { Brick, Playground, Scheme } from "..";
+import { Brick, Playground } from "..";
 
 class Game {
   playground: Playground;
@@ -9,7 +9,10 @@ class Game {
 
   constructor() {
     this.playground = {
-      scheme: [],
+      scheme: {
+        cells: [],
+        offset: {x: 0, y: 0},
+      },
       size: { w: 10, h: 16 },
     };
     this.score = 0;
@@ -23,7 +26,7 @@ class Game {
   }
 
   tick(): Game {
-    if (this.brick.coords.y === this.playground.size.h - 1) {
+    if (this.brick.landed(this.playground)) {
       this.brick = Brick.random({ playground: this.playground });
     } else {
       this.brick.down();

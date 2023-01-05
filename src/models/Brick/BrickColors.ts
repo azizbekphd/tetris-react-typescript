@@ -6,7 +6,7 @@ const BrickColors = {
     [BrickCode.J]: CellColor.blue,
     [BrickCode.L]: CellColor.orange,
     [BrickCode.O]: CellColor.yellow,
-    [BrickCode.S]: CellColor.green,
+    [BrickCode.S]: CellColor.lawngreen,
     [BrickCode.T]: CellColor.deeppink,
     [BrickCode.Z]: CellColor.red,
 }
