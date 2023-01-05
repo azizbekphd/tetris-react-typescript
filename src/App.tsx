@@ -3,6 +3,7 @@ import "./App.css";
 import useForceUpdate from "./hooks/useForceUpdate";
 import useInterval from "./hooks/useInterval";
 import { Game } from "./models";
+import SchemeUtils from "./models/Scheme/SchemeUtils";
 
 function App() {
   const [game, setGame] = useState<Game>(new Game());
@@ -10,7 +11,6 @@ function App() {
   const gameInterval = useInterval(() => {
     setGame(game.tick());
     forceUpdate();
-    console.log(game);
   }, game.timeInterval);
 
   return (
@@ -26,6 +26,14 @@ function App() {
                     game.brick.overlaps({ x: i, y: j })
                       ? {
                           backgroundColor: game.brick.color,
+                        }
+                      : SchemeUtils.overlaps(game.playground.scheme, {
+                          x: i,
+                          y: j,
+                        })
+                      ? {
+                          backgroundColor:
+                            game.playground.scheme.cells[j][i].color,
                         }
                       : {}
                   }

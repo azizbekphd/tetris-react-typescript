@@ -75,7 +75,7 @@ class Brick {
         })
         .findIndex((cell) => {
           return (
-            cell.y === playground.size.h - 1 || SchemeUtils.overlaps(playground.scheme, cell)
+            cell.y === playground.size.h || SchemeUtils.overlaps(playground.scheme, cell)
           );
         }) !== -1
     );

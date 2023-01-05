@@ -2,13 +2,16 @@ import { Coords, Scheme } from "..";
 
 class SchemeUtils {
   static filledCells(scheme: Scheme): Coords[] {
-    return scheme.cells.map((row, j) =>
-      row.map((cell, i) => {
-        return cell?.filled
-          ? { x: scheme.offset.x + i, y: scheme.offset.y + j }
-          : { x: -1, y: -1 };
-      })
-    ).flat();
+    return scheme.cells
+      .map((row, j) =>
+        row.map((cell, i) => {
+          return cell?.filled
+            ? { x: scheme.offset.x + i, y: scheme.offset.y + j }
+            : { x: -1, y: -1 };
+        })
+      )
+      .flat()
+      .filter((cell) => cell.x !== -1 && cell.y !== -1);
   }
 
   static overlaps(scheme: Scheme, coords: Coords): boolean {
