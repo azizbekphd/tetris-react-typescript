@@ -79,15 +79,23 @@ function App() {
           display: game.playing ? "none" : "flex",
         }}
       >
+        <h3>High score: {game.highScore}</h3>
         <button
           className="play-button"
           onClick={() => {
-            game.play();
+            if (game.gameOver) {
+              setGame(new Game(true));
+            } else {
+              game.play();
+            }
             forceUpdate();
           }}
         >
           &#9654;
         </button>
+        <h3>
+          {game.gameOver ? <span>Game Over! </span> : <></>}Score: {game.score}
+        </h3>
       </div>
     </div>
   );

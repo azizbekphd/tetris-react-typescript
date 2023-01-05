@@ -4,6 +4,7 @@ import SchemeUtils from "../Scheme/SchemeUtils";
 
 class Game {
   unit: number = 100;
+  highScore: number;
   playground: Playground;
   score: number;
   level: number;
@@ -11,7 +12,7 @@ class Game {
   nextBrick: Brick;
   playing: boolean;
 
-  constructor() {
+  constructor(playing: boolean = false) {
     this.playground = {
       scheme: {
         cells: new Array(16).fill(new Array<Cell>(10).fill({ filled: false })),
@@ -23,11 +24,16 @@ class Game {
     this.level = 1;
     this.brick = Brick.random({ playground: this.playground });
     this.nextBrick = Brick.random({ playground: this.playground });
-    this.playing = false;
+    this.playing = playing;
+    this.highScore = parseInt(localStorage.getItem("hi") ?? "0");
   }
 
   get timeInterval() {
     return 500 / this.level;
+  }
+
+  get gameOver() {
+    return SchemeUtils.overlaps(this.nextBrick.scheme, this.playground.scheme);
   }
 
   tick(): Game {
@@ -82,6 +88,11 @@ class Game {
   }
 
   renewBrick() {
+    if (this.gameOver) {
+      this.playing = false;
+      this.setScore();
+      return;
+    }
     this.brick = this.nextBrick;
     this.nextBrick = Brick.random({ playground: this.playground });
   }
@@ -114,6 +125,13 @@ class Game {
 
   play() {
     this.playing = true;
+  }
+
+  setScore() {
+    if (this.score > this.highScore) {
+      localStorage.setItem("hi", this.score.toString());
+      this.highScore = this.score;
+    }
   }
 }
 
