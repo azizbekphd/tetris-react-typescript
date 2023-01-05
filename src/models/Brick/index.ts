@@ -150,17 +150,22 @@ class Brick {
       cells: newCells,
     };
 
-    const width = SchemeUtils.width(newScheme);
-    const height = SchemeUtils.height(newScheme);
+    const width = SchemeUtils.filteredWidth(newScheme);
+    const height = SchemeUtils.filteredHeight(newScheme);
 
     while (newScheme.offset.x < SchemeUtils.emptyColsLeft(newScheme)) {
       newScheme.offset.x++;
     }
-    while ((newScheme.offset.x + width) < SchemeUtils.emptyColsRight(newScheme)) {
+    while (
+      newScheme.offset.x + width >
+      playground.size.w - SchemeUtils.emptyColsRight(newScheme)
+    ) {
       newScheme.offset.x--;
     }
-    while (SchemeUtils.overlaps(newScheme, playground.scheme) ||
-      newScheme.offset.y + height > playground.size.h) {
+    while (
+      SchemeUtils.overlaps(newScheme, playground.scheme) ||
+      newScheme.offset.y + height > playground.size.h
+    ) {
       newScheme.offset.y--;
     }
     this.scheme = newScheme;

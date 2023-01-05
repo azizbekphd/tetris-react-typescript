@@ -7,6 +7,7 @@ class Game {
   score: number;
   level: number;
   brick: Brick;
+  nextBrick: Brick;
   playing: boolean;
 
   constructor() {
@@ -20,6 +21,7 @@ class Game {
     this.score = 0;
     this.level = 1;
     this.brick = Brick.random({ playground: this.playground });
+    this.nextBrick = Brick.random({playground: this.playground});
     this.playing = true;
   }
 
@@ -51,7 +53,10 @@ class Game {
         });
       }
     );
-    this.brick = Brick.random({ playground: this.playground });
+
+    this.renewBrick();
+
+    this.removeFullRows();
   }
 
   moveBrick(direction: "l" | "r" | "d") {
@@ -72,6 +77,27 @@ class Game {
 
   rotateBrick() {
     this.brick.rotate(this.playground);
+  }
+
+  renewBrick() {
+    this.brick = this.nextBrick;
+    this.nextBrick = Brick.random({ playground: this.playground });
+  }
+
+  removeFullRows() {
+    for (let i = this.playground.scheme.cells.length - 1; i >= 0; i--) {
+      const row = this.playground.scheme.cells[i];
+      if (!row.some((cell) => !cell.filled)) {
+        this.playground.scheme.cells.splice(i, 1);
+      }
+    }
+    this.playground.scheme.cells.splice(
+      0,
+      0,
+      ...new Array(
+        this.playground.size.h - SchemeUtils.height(this.playground.scheme)
+      ).fill(new Array(this.playground.size.w).fill({ filled: false }))
+    );
   }
 }
 

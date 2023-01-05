@@ -9,6 +9,33 @@ class SchemeUtils {
     return Math.max(...scheme.cells.map((row) => row.length));
   }
 
+  static filteredHeight(scheme: Scheme): number {
+    return scheme.cells.filter((row) => !row.some((cell) => cell.filled))
+      .length;
+  }
+
+  static filteredWidth(scheme: Scheme): number {
+    const nonEmptyRows = scheme.cells.filter((row) =>
+      row.some((cell) => cell.filled)
+    );
+    console.log(nonEmptyRows);
+    return (
+      Math.max(
+        ...nonEmptyRows.map(
+          (row) =>
+            row.length -
+            row
+              .slice()
+              .reverse()
+              .findIndex((cell) => cell.filled)
+        )
+      ) -
+      Math.min(
+        ...nonEmptyRows.map((row) => row.findIndex((cell) => cell.filled))
+      )
+    );
+  }
+
   static filledCells(scheme: Scheme): Coords[] {
     return scheme.cells
       .map((row, j) =>
@@ -54,7 +81,10 @@ class SchemeUtils {
       0,
       Math.min(
         ...scheme.cells.map((row) =>
-          row.slice().reverse().findIndex((cell) => cell.filled)
+          row
+            .slice()
+            .reverse()
+            .findIndex((cell) => cell.filled)
         )
       )
     );
