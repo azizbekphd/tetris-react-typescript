@@ -1,13 +1,12 @@
 import { Coords, Scheme } from "..";
 
 class SchemeUtils {
-
   static height(scheme: Scheme): number {
     return scheme.cells.length;
   }
 
   static width(scheme: Scheme): number {
-    return Math.max(...scheme.cells.map((row) => row.length))
+    return Math.max(...scheme.cells.map((row) => row.length));
   }
 
   static filledCells(scheme: Scheme): Coords[] {
@@ -24,10 +23,8 @@ class SchemeUtils {
   }
 
   static includes(scheme: Scheme, coords: Coords): boolean {
-    return (
-      SchemeUtils.filledCells(scheme).some(
-        (cell) => cell.x === coords.x && cell.y === coords.y
-      )
+    return SchemeUtils.filledCells(scheme).some(
+      (cell) => cell.x === coords.x && cell.y === coords.y
     );
   }
 
@@ -35,12 +32,32 @@ class SchemeUtils {
     const cells1 = SchemeUtils.filledCells(scheme1);
     const cells2 = SchemeUtils.filledCells(scheme2);
     for (let i = 0; i < cells1.length; i++) {
-        const cell1 = cells1[i]
-        if (cells2.some((cell2) => cell1.x === cell2.x && cell1.y === cell2.y)) {
-            return true;
-        }
+      const cell1 = cells1[i];
+      if (cells2.some((cell2) => cell1.x === cell2.x && cell1.y === cell2.y)) {
+        return true;
+      }
     }
     return false;
+  }
+
+  static emptyColsLeft(scheme: Scheme): number {
+    return Math.max(
+      0,
+      Math.min(
+        ...scheme.cells.map((row) => row.findIndex((cell) => cell.filled))
+      )
+    );
+  }
+
+  static emptyColsRight(scheme: Scheme): number {
+    return Math.max(
+      0,
+      Math.min(
+        ...scheme.cells.map((row) =>
+          row.slice().reverse().findIndex((cell) => cell.filled)
+        )
+      )
+    );
   }
 }
 

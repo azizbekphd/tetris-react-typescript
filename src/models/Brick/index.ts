@@ -142,7 +142,6 @@ class Brick {
           : cell;
       })
     );
-    console.table(oldCells);
     const newCells = cellsSquare.map((row, y) =>
       row.map((cell, x) => oldCells[maxIndex - x][y])
     );
@@ -150,10 +149,21 @@ class Brick {
       ...this.scheme,
       cells: newCells,
     };
-    if (!SchemeUtils.overlaps(newScheme, playground.scheme)) {
-      this.scheme = newScheme;
+
+    const width = SchemeUtils.width(newScheme);
+    const height = SchemeUtils.height(newScheme);
+
+    while (newScheme.offset.x < SchemeUtils.emptyColsLeft(newScheme)) {
+      newScheme.offset.x++;
     }
-    console.log(newScheme);
+    while ((newScheme.offset.x + width) < SchemeUtils.emptyColsRight(newScheme)) {
+      newScheme.offset.x--;
+    }
+    while (SchemeUtils.overlaps(newScheme, playground.scheme) ||
+      newScheme.offset.y + height >= playground.size.h) {
+      newScheme.offset.y--;
+    }
+    this.scheme = newScheme;
   }
 }
 
