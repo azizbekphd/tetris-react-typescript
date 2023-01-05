@@ -3,6 +3,7 @@ import BrickColors from "../Brick/BrickColors";
 import SchemeUtils from "../Scheme/SchemeUtils";
 
 class Game {
+  unit: number = 100;
   playground: Playground;
   score: number;
   level: number;
@@ -21,7 +22,7 @@ class Game {
     this.score = 0;
     this.level = 1;
     this.brick = Brick.random({ playground: this.playground });
-    this.nextBrick = Brick.random({playground: this.playground});
+    this.nextBrick = Brick.random({ playground: this.playground });
     this.playing = true;
   }
 
@@ -70,6 +71,7 @@ class Game {
       }
     } else if (direction == "d") {
       if (!this.brick.landed(this.playground)) {
+        this.score += 1;
         this.brick.moveDown();
       }
     }
@@ -91,13 +93,19 @@ class Game {
         this.playground.scheme.cells.splice(i, 1);
       }
     }
+
+    const deletedRows =
+      this.playground.size.h - SchemeUtils.height(this.playground.scheme);
+
     this.playground.scheme.cells.splice(
       0,
       0,
-      ...new Array(
-        this.playground.size.h - SchemeUtils.height(this.playground.scheme)
-      ).fill(new Array(this.playground.size.w).fill({ filled: false }))
+      ...new Array(deletedRows).fill(
+        new Array(this.playground.size.w).fill({ filled: false })
+      )
     );
+
+    this.score += this.unit * this.level * deletedRows;
   }
 }
 

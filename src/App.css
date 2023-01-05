@@ -1,9 +1,12 @@
 .App {
+  margin: 0 auto;
   display: flex;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
   padding: 20px;
   background-color: lightcyan;
+  width: max-content;
   height: 100vh;
 }
 
@@ -20,4 +23,12 @@
   width: 25px;
   height: 25px;
   background-color: lightgray;
+}
+
+.appbar {
+  align-self: stretch;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
 }

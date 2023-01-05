@@ -18,7 +18,6 @@ class SchemeUtils {
     const nonEmptyRows = scheme.cells.filter((row) =>
       row.some((cell) => cell.filled)
     );
-    console.log(nonEmptyRows);
     return (
       Math.max(
         ...nonEmptyRows.map(

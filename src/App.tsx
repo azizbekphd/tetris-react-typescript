@@ -24,13 +24,17 @@ function App() {
     document.onkeydown = (e) => {
       if (activeKeys.includes(e.key)) {
         actions[e.key]();
-        forceUpdate()
+        forceUpdate();
       }
     };
   }, [game]);
 
   return (
     <div className="App">
+      <div className="appbar">
+        <h4>Score: {game.score}</h4>
+        <button>| |</button>
+      </div>
       <table className="playground">
         <tbody>
           {Array.from(Array(game.playground.size.h).keys()).map((j) => (
