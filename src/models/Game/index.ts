@@ -29,7 +29,7 @@ class Game {
   }
 
   get timeInterval() {
-    return 500 / this.level;
+    return Math.max(10, 500 - (this.level)*30);
   }
 
   get gameOver() {
@@ -64,6 +64,13 @@ class Game {
     this.renewBrick();
 
     this.removeFullRows();
+
+    if (this.gameOver) {
+      this.playing = false;
+      this.setScore();
+    }
+
+    this.checkLevel();
   }
 
   moveBrick(direction: "l" | "r" | "d") {
@@ -77,7 +84,7 @@ class Game {
       }
     } else if (direction == "d") {
       if (!this.brick.landed(this.playground)) {
-        this.score += 1;
+        this.score += this.level;
         this.brick.moveDown();
       }
     }
@@ -88,11 +95,6 @@ class Game {
   }
 
   renewBrick() {
-    if (this.gameOver) {
-      this.playing = false;
-      this.setScore();
-      return;
-    }
     this.brick = this.nextBrick;
     this.nextBrick = Brick.random({ playground: this.playground });
   }
@@ -131,6 +133,12 @@ class Game {
     if (this.score > this.highScore) {
       localStorage.setItem("hi", this.score.toString());
       this.highScore = this.score;
+    }
+  }
+
+  checkLevel() {
+    if (Math.pow(this.unit/10, this.level) < this.score) {
+      this.level++;
     }
   }
 }

@@ -35,6 +35,7 @@ function App() {
     <div className="App">
       <div className="appbar">
         <h4>Score: {game.score}</h4>
+        <h4>Level: {game.level}</h4>
         <button
           className="pause-button"
           onClick={() => {
@@ -45,34 +46,39 @@ function App() {
           | |
         </button>
       </div>
-      <table className="playground">
-        <tbody>
-          {Array.from(Array(game.playground.size.h).keys()).map((j) => (
-            <tr key={j}>
-              {Array.from(Array(game.playground.size.w).keys()).map((i) => (
-                <td
-                  key={i}
-                  style={
-                    game.brick.includes({ x: i, y: j })
-                      ? {
-                          backgroundColor: game.brick.color,
-                        }
-                      : SchemeUtils.includes(game.playground.scheme, {
-                          x: i,
-                          y: j,
-                        })
-                      ? {
-                          backgroundColor:
-                            game.playground.scheme.cells[j][i].color,
-                        }
-                      : {}
-                  }
-                ></td>
-              ))}
-            </tr>
-          ))}
-        </tbody>
-      </table>
+      <div className="playground-wrapper">
+        <table className="playground">
+          <tbody>
+            {Array.from(Array(game.playground.size.h).keys()).map((j) => (
+              <tr key={j}>
+                {Array.from(Array(game.playground.size.w).keys()).map((i) => (
+                  <td
+                    key={i}
+                    style={
+                      game.brick.includes({ x: i, y: j })
+                        ? {
+                            backgroundColor: game.brick.color,
+                          }
+                        : SchemeUtils.includes(game.playground.scheme, {
+                            x: i,
+                            y: j,
+                          })
+                        ? {
+                            backgroundColor:
+                              game.playground.scheme.cells[j][i].color,
+                          }
+                        : {}
+                    }
+                  ></td>
+                ))}
+              </tr>
+            ))}
+          </tbody>
+        </table>
+        <div>
+          {game.nextBrick.code}
+        </div>
+      </div>
       <div
         className="fullscreen-menu"
         style={{
