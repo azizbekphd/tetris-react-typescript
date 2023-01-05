@@ -31,7 +31,7 @@ class Game {
     if (this.brick.landed(this.playground)) {
       this.landBrick();
     } else {
-      this.brick.down();
+      this.brick.moveDown();
     }
     return this;
   }
@@ -40,7 +40,7 @@ class Game {
     this.playground.scheme.cells = this.playground.scheme.cells.map(
       (row, y) => {
         return row.map((cell, x) => {
-          if (SchemeUtils.overlaps(this.brick.scheme, { x, y })) {
+          if (SchemeUtils.includes(this.brick.scheme, { x, y })) {
             return {
               filled: true,
               color: this.brick.color,
@@ -52,6 +52,26 @@ class Game {
       }
     );
     this.brick = Brick.random({ playground: this.playground });
+  }
+
+  moveBrick(direction: "l" | "r" | "d") {
+    if (direction == "l") {
+      if (this.brick.canMoveLeft(this.playground)) {
+        this.brick.moveLeft();
+      }
+    } else if (direction == "r") {
+      if (this.brick.canMoveRight(this.playground)) {
+        this.brick.moveRight();
+      }
+    } else if (direction == "d") {
+      if (!this.brick.landed(this.playground)) {
+        this.brick.moveDown();
+      }
+    }
+  }
+
+  rotateBrick() {
+    this.brick.rotate(this.playground);
   }
 }
 

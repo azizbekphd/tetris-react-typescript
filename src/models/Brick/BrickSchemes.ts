@@ -15,7 +15,7 @@ function stringToScheme(s: string): Scheme {
 }
 
 const BrickSchemes = {
-  [BrickCode.I]: stringToScheme("xxxx"),
+  [BrickCode.I]: stringToScheme("    \n" + "xxxx"),
   [BrickCode.J]: stringToScheme("x  \n" + "xxx"),
   [BrickCode.L]: stringToScheme("  x\n" + "xxx"),
   [BrickCode.O]: stringToScheme("xx\n" + "xx"),

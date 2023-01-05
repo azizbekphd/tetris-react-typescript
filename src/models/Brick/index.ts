@@ -1,4 +1,4 @@
-import { Coords, Playground, Scheme } from "..";
+import { Cell, Coords, Playground, Scheme } from "..";
 import SchemeUtils from "../Scheme/SchemeUtils";
 import BrickCode from "./BrickCode";
 import BrickColors from "./BrickColors";
@@ -27,7 +27,7 @@ class Brick {
             2
         ),
         y: 0,
-      }
+      },
     };
   }
 
@@ -45,22 +45,22 @@ class Brick {
   }
 
   get height() {
-    return this.scheme.cells.length;
+    return SchemeUtils.height(this.scheme);
   }
 
   get width() {
-    return Math.max(...this.scheme.cells.map((row) => row.length));
+    return SchemeUtils.width(this.scheme);
   }
 
   get filledCells() {
     return SchemeUtils.filledCells(this.scheme);
   }
 
-  overlaps(coords: Coords): boolean {
-    return SchemeUtils.overlaps(this.scheme, coords);
+  includes(coords: Coords): boolean {
+    return SchemeUtils.includes(this.scheme, coords);
   }
 
-  down() {
+  moveDown() {
     this.scheme.offset.y++;
   }
 
@@ -75,10 +75,85 @@ class Brick {
         })
         .findIndex((cell) => {
           return (
-            cell.y === playground.size.h || SchemeUtils.overlaps(playground.scheme, cell)
+            cell.y === playground.size.h ||
+            SchemeUtils.includes(playground.scheme, cell)
           );
         }) !== -1
     );
+  }
+
+  canMoveLeft(playground: Playground): boolean {
+    return (
+      this.filledCells
+        .map((cell) => {
+          return {
+            ...cell,
+            x: cell.x - 1,
+          };
+        })
+        .findIndex((cell) => {
+          return cell.x <= -1 || SchemeUtils.includes(playground.scheme, cell);
+        }) === -1
+    );
+  }
+
+  moveLeft() {
+    this.scheme.offset.x--;
+  }
+
+  canMoveRight(playground: Playground): boolean {
+    return (
+      this.filledCells
+        .map((cell) => {
+          return {
+            ...cell,
+            x: cell.x + 1,
+          };
+        })
+        .findIndex((cell) => {
+          return (
+            cell.x >= playground.size.w ||
+            SchemeUtils.includes(playground.scheme, cell)
+          );
+        }) === -1
+    );
+  }
+
+  moveRight() {
+    this.scheme.offset.x++;
+  }
+
+  rotate(playground: Playground) {
+    const squareSize = Math.max(this.width, this.height);
+    const maxIndex = squareSize - 1;
+    const cellsSquare: Cell[][] = new Array(squareSize).fill(
+      new Array<Cell>(squareSize).fill({ filled: false })
+    );
+    const oldCells = cellsSquare.map((row, y) =>
+      row.map((cell, x) => {
+        return SchemeUtils.includes(
+          { ...this.scheme, offset: { x: 0, y: 0 } },
+          { x, y }
+        )
+          ? {
+              filled: true,
+              color: this.color,
+            }
+          : cell;
+      })
+    );
+    console.table(oldCells);
+    const newCells = cellsSquare.map((row, y) =>
+      row.map((cell, x) => oldCells[maxIndex - x][y])
+    );
+    const newScheme: Scheme = {
+      ...this.scheme,
+      cells: newCells,
+    };
+    if (!SchemeUtils.overlaps(newScheme, playground.scheme)) {
+      this.scheme = newScheme;
+    }
+    console.log(newScheme);
   }
 }
 

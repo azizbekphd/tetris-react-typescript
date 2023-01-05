@@ -13,6 +13,22 @@ function App() {
     forceUpdate();
   }, game.timeInterval);
 
+  useEffect(() => {
+    const actions: { [key: string]: () => void } = {
+      ArrowLeft: () => game.moveBrick("l"),
+      ArrowRight: () => game.moveBrick("r"),
+      ArrowDown: () => game.moveBrick("d"),
+      ArrowUp: () => game.rotateBrick(),
+    };
+    const activeKeys = Object.keys(actions);
+    document.onkeydown = (e) => {
+      if (activeKeys.includes(e.key)) {
+        actions[e.key]();
+        forceUpdate()
+      }
+    };
+  }, [game]);
+
   return (
     <div className="App">
       <table className="playground">
@@ -23,11 +39,11 @@ function App() {
                 <td
                   key={i}
                   style={
-                    game.brick.overlaps({ x: i, y: j })
+                    game.brick.includes({ x: i, y: j })
                       ? {
                           backgroundColor: game.brick.color,
                         }
-                      : SchemeUtils.overlaps(game.playground.scheme, {
+                      : SchemeUtils.includes(game.playground.scheme, {
                           x: i,
                           y: j,
                         })
