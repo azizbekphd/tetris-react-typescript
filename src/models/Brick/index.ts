@@ -56,6 +56,24 @@ class Brick {
     return SchemeUtils.filledCells(this.scheme);
   }
 
+  get preview(): Scheme {
+    const emptyCell: Cell = {filled: false};
+    const previewCells = this.scheme.cells.map((row) => [
+      emptyCell,
+      ...row,
+      emptyCell,
+    ]);
+    const width = SchemeUtils.width(this.scheme) + 2;
+    const emptyRow = new Array<Cell>(width).fill(emptyCell);
+    previewCells.push(emptyRow);
+    previewCells.unshift(emptyRow);
+    console.table(previewCells.map((row)=>row.map((cell)=>cell.filled?"x":"")))
+    return {
+      cells: previewCells,
+      offset: {x: 0, y: 0}
+    }
+  }
+
   includes(coords: Coords): boolean {
     return SchemeUtils.includes(this.scheme, coords);
   }

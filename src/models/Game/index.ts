@@ -137,7 +137,7 @@ class Game {
   }
 
   checkLevel() {
-    if (Math.pow(this.unit/10, this.level) < this.score) {
+    if (Math.pow(2, this.level) * 10 < this.score) {
       this.level++;
     }
   }

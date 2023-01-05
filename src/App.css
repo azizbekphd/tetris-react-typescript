@@ -76,3 +76,7 @@ button:active {
 .playground-wrapper>*:not(:first-child) {
   margin-left: 10px;
 }
+
+.preview {
+  width: 150px;
+}

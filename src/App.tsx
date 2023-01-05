@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import "./App.css";
 import useForceUpdate from "./hooks/useForceUpdate";
 import useInterval from "./hooks/useInterval";
-import { Game } from "./models";
+import { Brick, Game } from "./models";
 import SchemeUtils from "./models/Scheme/SchemeUtils";
 
 function App() {
@@ -75,8 +75,31 @@ function App() {
             ))}
           </tbody>
         </table>
-        <div>
-          {game.nextBrick.code}
+        <div className="preview">
+          <table className="playground">
+            <tbody>
+              {Array.from(
+                Array(SchemeUtils.height(game.nextBrick.preview)).keys()
+              ).map((j) => (
+                <tr key={j}>
+                  {Array.from(
+                    Array(SchemeUtils.width(game.nextBrick.preview)).keys()
+                  ).map((i) => (
+                    <td
+                      key={i}
+                      style={
+                        SchemeUtils.includes(game.nextBrick.preview, { x: i, y: j })
+                          ? {
+                              backgroundColor: game.nextBrick.color,
+                            }
+                          : {}
+                      }
+                    ></td>
+                  ))}
+                </tr>
+              ))}
+            </tbody>
+          </table>
         </div>
       </div>
       <div
