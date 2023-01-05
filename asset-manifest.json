@@ -1,15 +1,15 @@
 {
   "files": {
-    "main.css": "/static/css/main.1e317b48.css",
-    "main.js": "/static/js/main.360a96f4.js",
-    "static/js/787.0ef42b96.chunk.js": "/static/js/787.0ef42b96.chunk.js",
-    "index.html": "/index.html",
-    "main.1e317b48.css.map": "/static/css/main.1e317b48.css.map",
-    "main.360a96f4.js.map": "/static/js/main.360a96f4.js.map",
-    "787.0ef42b96.chunk.js.map": "/static/js/787.0ef42b96.chunk.js.map"
+    "main.css": "/tetris-react-typescript/static/css/main.1e317b48.css",
+    "main.js": "/tetris-react-typescript/static/js/main.c4b6417f.js",
+    "static/js/787.0ef42b96.chunk.js": "/tetris-react-typescript/static/js/787.0ef42b96.chunk.js",
+    "index.html": "/tetris-react-typescript/index.html",
+    "main.1e317b48.css.map": "/tetris-react-typescript/static/css/main.1e317b48.css.map",
+    "main.c4b6417f.js.map": "/tetris-react-typescript/static/js/main.c4b6417f.js.map",
+    "787.0ef42b96.chunk.js.map": "/tetris-react-typescript/static/js/787.0ef42b96.chunk.js.map"
   },
   "entrypoints": [
     "static/css/main.1e317b48.css",
-    "static/js/main.360a96f4.js"
+    "static/js/main.c4b6417f.js"
   ]
 }
